@@ -16,7 +16,7 @@ def calculate_matrix_index(rightMatrix, row, col, leftMatrix):
     sum = 0
     for i in range(0, len(rightMatrix)):
         sum += leftMatrix[row][i] * rightMatrix[i][col]
-    if isclose(sum, round(sum)):
+    if isclose(sum, round(sum)) or isclose(sum + 1, round(sum) + 1):
         return round(sum)
     return sum
 
@@ -165,6 +165,7 @@ def printSolution(matrix, elementaryMatricesList, originalMatrix):
             printEveryStepOfSolution(eval(repr(elementaryMatricesList)), eval(repr(originalMatrix)), f)
     except IOError:
         print('Error, problem with the output file')
+        print('l;')
 
 
 
