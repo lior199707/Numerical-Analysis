@@ -323,13 +323,86 @@ def userMenu(matrix):
 
 
 """mat3 = PlaceMaxOnDiagonal(mat3, [])
-print_matrix(mat3)"""
+print_matrix(mat3)
 # mat3 = [[4,20,8,0], [5,9,17,0], [6, 10, 1, 0]]
 mat3 = [[0, 1, -1, -1], [3, -1, 1, 4], [1, 1, -2, -3]]
-"""gaussElimination(mat3)
+gaussElimination(mat3)
 
-print_matrix(mat3)"""
-userMenu(mat3)
+print_matrix(mat3)
+userMenu(mat3)"""
+
+"""return the machine epsilon"""
+def machineEpsilon(func=float):
+    machine_epsilon = func(1)
+    while func(1) + func(machine_epsilon) != func(1):
+        machine_epsilon_last = machine_epsilon
+        machine_epsilon = func(machine_epsilon) / func(2)
+    return machine_epsilon_last
+
+
+def makeAllMatrixZeroExceptDiagonal(matrix):
+    print('//////////////')
+    print_matrix(matrix)
+    numOfRows = len(matrix)
+    newMatrix = createZeroMatrixInSize(numOfRows, numOfRows)
+    for row in range(numOfRows):
+        newMatrix[row][row] = matrix[row][row]
+    return newMatrix
+
+
+def zeroDiagonal(matrix):
+    numOfRows = len(matrix)
+    newMatrix = createZeroMatrixInSize(numOfRows, numOfRows)
+    for row in range(numOfRows):
+        for col in range(numOfRows):
+            if row != col:
+                newMatrix[row][col] = matrix[row][col]
+    return newMatrix
+
+def createSolutionMatrix(matrix):
+    result = []
+    numOfRows = len(matrix)
+    for row in range(numOfRows):
+        currMatrix = []
+        result.append([matrix[row][numOfRows]])
+    return result
+
+
+def matricesSubtraction(leftMat, rightMat):
+    leftMatNumOfRows = len(leftMat)
+    rightMatNumOfRows = len(rightMat)
+    leftMatNumOfCols = len(leftMat[0])
+    rightMatNumOfCols = len(rightMat[0])
+    if leftMatNumOfRows != rightMatNumOfRows or leftMatNumOfCols != rightMatNumOfCols:
+        print('Error')
+        return None
+    newMat = createZeroMatrixInSize(leftMatNumOfRows, leftMatNumOfCols)
+    for row in range(leftMatNumOfRows):
+        for col in range(leftMatNumOfCols):
+            newMat[row][col] = leftMat[row][col] - rightMat[row][col]
+    return newMat
+
+def isIdenticaltMatrices(mat1, mat2):
+    mat1NumOfRows = len(mat1)
+    mat2NumOfRows = len(mat2)
+    mat1NumOfCols = len(mat1[0])
+    mat2NumOfCols = len(mat2[0])
+    if mat1NumOfRows != mat2NumOfRows or mat1NumOfCols != mat2NumOfCols:
+        print('Error')
+        return False
+    epsilon = machineEpsilon()
+    for row in range(mat1NumOfRows):
+        for col in range(mat1NumOfCols):
+            if ( (mat1[row][col] != (mat2[row][col] + epsilon))
+                    and ( mat1[row][col] != (mat2[row][col] - epsilon))
+                    and (mat1[row][col] != (mat2[row][col]))):
+                return False
+    return True
+
+def isDifferentMatrices(mat1, mat2):
+    return not isIdenticaltMatrices(mat1, mat2)
+
+
 
 
 
