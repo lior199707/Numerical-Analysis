@@ -341,8 +341,6 @@ def machineEpsilon(func=float):
 
 
 def makeAllMatrixZeroExceptDiagonal(matrix):
-    print('//////////////')
-    print_matrix(matrix)
     numOfRows = len(matrix)
     newMatrix = createZeroMatrixInSize(numOfRows, numOfRows)
     for row in range(numOfRows):
@@ -359,11 +357,10 @@ def zeroDiagonal(matrix):
                 newMatrix[row][col] = matrix[row][col]
     return newMatrix
 
-def createSolutionMatrix(matrix):
+def extractSolutionColunm(matrix):
     result = []
     numOfRows = len(matrix)
     for row in range(numOfRows):
-        currMatrix = []
         result.append([matrix[row][numOfRows]])
     return result
 
