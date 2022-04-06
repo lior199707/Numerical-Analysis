@@ -38,18 +38,24 @@ def createZeroMatrixInSize(numOfRows, numOfCols):
     return matrix
 
 def print_matrix(matrix):
-    """
-    prints a matrix to the screen (in a form of a matrix)
-    :param matrix: the matrix to print
-    """
-    for row in matrix:
-        rowString = ''
-        for element in row:
-            rowString += f'{str(element)} '
-        print(rowString)
-        # f.write(rowString + '\n')
-    print('')
-    # f.write('\n')
+    newMatrix = []
+    newMatrix.append(matrix)
+    maxIntNumberLength = findMaxLengthNumberInElementaryList(newMatrix)
+    # print every row of the reverse matrix so numbers in the same col will be on the same col also in the printing
+    # determine how many spaces to add before an element by: maxIntNumberLength - currIntNumberLength
+    numOfRows = len(matrix)
+    numOfCols = len(matrix[0])
+    for row in range(0, numOfRows):
+        rowStr = '|'
+        for col in range(0, numOfCols):
+            currIntNumberLength = len(str(matrix[row][col]).split('.')[0])
+            for _ in range(maxIntNumberLength - currIntNumberLength, 0, -1):
+                rowStr += ' '
+            rowStr += f'{matrix[row][col]:.4f} '
+            if col == numOfCols - 1:  # if it's the last col
+                rowStr += '|'
+        print(rowStr)
+    print('\n')
 
 
 def placeMaxOnDiagonal(matrix, elementaryMatrixList):
