@@ -61,6 +61,6 @@ if isDifferentMatrices(mat1, mat2):
 
 mat1 = [[3, -1, 1, 4], [0, 1, -1, -1], [1, 1, -2, -3]]
 mat2 = [[1, -2, -2], [2, 1, 2]]
-jacobiMethod(mat2)
+jacobiMethod(mat1)
 # userMenu(mat2)
 
