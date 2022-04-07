@@ -385,25 +385,25 @@ def matricesSubtraction(leftMat, rightMat):
             newMat[row][col] = leftMat[row][col] - rightMat[row][col]
     return newMat
 
-def isIdenticaltMatrices(mat1, mat2):
+
+def isIdenticalMatrices(mat1, mat2):
+    return not isDifferentMatrices(mat1, mat2)
+
+
+def isDifferentMatrices(mat1, mat2):
     mat1NumOfRows = len(mat1)
     mat2NumOfRows = len(mat2)
     mat1NumOfCols = len(mat1[0])
     mat2NumOfCols = len(mat2[0])
     if mat1NumOfRows != mat2NumOfRows or mat1NumOfCols != mat2NumOfCols:
         print('Error')
-        return False
+        return True
     epsilon = machineEpsilon()
     for row in range(mat1NumOfRows):
         for col in range(mat1NumOfCols):
-            if ( (mat1[row][col] != (mat2[row][col] + epsilon))
-                    and ( mat1[row][col] != (mat2[row][col] - epsilon))
-                    and (mat1[row][col] != (mat2[row][col]))):
-                return False
-    return True
-
-def isDifferentMatrices(mat1, mat2):
-    return not isIdenticaltMatrices(mat1, mat2)
+            if not (isclose(mat1[row][col], mat2[row][col]) or (isclose(mat1[row][col] + 1.0, mat2[row][col] + 1.0))):
+                return True
+    return False
 
 
 
