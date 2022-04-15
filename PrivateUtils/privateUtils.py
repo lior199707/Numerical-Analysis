@@ -2,6 +2,8 @@ from functools import reduce
 from math import isclose
 
 
+# //////////////////////////////////////////////////////////////
+# functions for matrices
 def multiplyMatrices(m1, m2):
     """
     multiples m1*m2, of size NxK, KxM
@@ -36,6 +38,7 @@ def createZeroMatrixInSize(numOfRows, numOfCols):
             tempMatrix.append(0)
         matrix.append(tempMatrix)
     return matrix
+
 
 def print_matrix(matrix):
     newMatrix = []
@@ -124,7 +127,9 @@ def zeroUnderDiagonal(matrix, elementaryMatricesList):
                 elementaryMatricesList.append(elementaryMatrix)
                 newMatrix = multiplyMatrices(elementaryMatrix, newMatrix)
     return newMatrix
-#newMatrix
+
+
+# newMatrix
 
 
 def zeroAboveDiagonal(matrix, elementaryMatricesList):
@@ -208,7 +213,8 @@ def printElementaryMatrices(elementaryMatricesList):
         for currentMatrix in range(0, len(elementaryMatricesList)):  # for every matrix
             for currCol in range(0, len(elementaryMatricesList[currentMatrix][0])):  # for every element
                 # calculate the current element integer part length
-                currNumOfIntegerDigits = len(str(elementaryMatricesList[currentMatrix][currentRow][currCol]).split('.')[0])
+                currNumOfIntegerDigits = len(
+                    str(elementaryMatricesList[currentMatrix][currentRow][currCol]).split('.')[0])
                 if currCol == len(elementaryMatricesList[currentMatrix][0]) - 1:  # if in the last col of a matrix
                     for _ in range(maxNumberOfIntegerDigits - currNumOfIntegerDigits, 0, -1):
                         result += ' '
@@ -233,7 +239,7 @@ def printElementaryMatrices(elementaryMatricesList):
 
     result += '\n\n'
     print(result)
-    #f.write(result)
+    # f.write(result)
 
 
 def printEveryStepOfSolution(elementaryMatricesList, matrix):
@@ -245,7 +251,7 @@ def printEveryStepOfSolution(elementaryMatricesList, matrix):
     tempElementaryMatricesList = eval(repr(elementaryMatricesList))
     tempElementaryMatricesList.reverse()
     currMatrix = eval(repr(matrix))  # copy the last matrix
-    while(tempElementaryMatricesList):  # as long as the list is not empty
+    while (tempElementaryMatricesList):  # as long as the list is not empty
         # currMatrix = eval(repr(matrix))  # copy the last matrix
         currElementaryMatrix = tempElementaryMatricesList.pop()  # pop the next elementary matrix fom the list
         currList = []  # will include [[elementary matrix], [current matrix], [result of the multiplication]]
@@ -273,6 +279,7 @@ def gaussElimination(mat):
         tempElementaryMatricesList.append(reverseMatrix)
         reverseMatrix = reduce(lambda matrix1, matrix2: multiplyMatrices(matrix1, matrix2), tempElementaryMatricesList)
         return reverseMatrix
+
     """
     algorithm for solving systems of linear equations
     :param mat: matrix
@@ -338,6 +345,8 @@ print_matrix(mat3)
 userMenu(mat3)"""
 
 """return the machine epsilon"""
+
+
 def machineEpsilon(func=float):
     machine_epsilon = func(1)
     while func(1) + func(machine_epsilon) != func(1):
@@ -362,6 +371,7 @@ def zeroDiagonal(matrix):
             if row != col:
                 newMatrix[row][col] = matrix[row][col]
     return newMatrix
+
 
 def extractSolutionColunm(matrix):
     result = []
@@ -396,7 +406,6 @@ def isDifferentMatrices(mat1, mat2):
     mat1NumOfCols = len(mat1[0])
     mat2NumOfCols = len(mat2[0])
     if mat1NumOfRows != mat2NumOfRows or mat1NumOfCols != mat2NumOfCols:
-        print('Error')
         return True
     epsilon = machineEpsilon()
     for row in range(mat1NumOfRows):
@@ -406,9 +415,102 @@ def isDifferentMatrices(mat1, mat2):
     return False
 
 
+# End of functions for matrices
+# //////////////////////////////////////////////////////////////
+
+
+# //////////////////////////////////////////////////////////////
+# Polynomial Functions
+
+def getPolynomial(polinomSize):
+    polinom = []
+    for index in range(polinomSize):
+        currentCoefficient = float(input(f'Please enter the coefficient of X{index + 1}: '))
+        polinom.append([currentCoefficient, polinomSize - index])
+    constant = float(input('Please enter the constant value: '))
+    polinom.append([constant, 0])
+    return polinom
+
+
+def findSolutionOfFunction(polinomList, x):
+    return float(sum([element[0] * pow(x, element[1]) for element in polinomList]))
+
+def getBoundaries():
+    leftBoundary = (float(input('Please enter the left boundary: ')))
+    rightBoundary = (float(input('Please enter the right boundary: ')))
+    return leftBoundary, rightBoundary
+
+
+def getMash(leftBoundary, rightBoundary, numOfMashes):
+    mash = []
+    subBoundary = (rightBoundary - leftBoundary)/numOfMashes
+    mash.append([leftBoundary, leftBoundary + subBoundary])
+    for index in range(numOfMashes - 2):
+        mash.append([mash[index][1], mash[index][1] + subBoundary])
+    mash.append([mash[numOfMashes - 2][1], rightBoundary])
+    print(mash)
+    return mash
+
+
+def filterRedundantPartsOfPolynomial(polynomial):
+    def isRedundantPartOfPolynomial(part):
+        return part[0] != 0 and part[1] >= 0
+    return [part for part in polynomial if isRedundantPartOfPolynomial(part)]
+
+
+def polynomialDerivative(polynomial):
+    """derivative = []
+    for part in polynomial:
+        derivative.append([part[0] * part[1], part[1] - 1])"""
+    return filterRedundantPartsOfPolynomial([[part[0] * part[1], part[1] - 1] for part in polynomial])
+
+
+def bisectionMethod(leftBoundary, rightBoundary, polinom, derivativeOfPolinom = None):
+    # set derivative to y = 1 so it won't inflect on calculations
+    if derivativeOfPolinom is None:
+        derivativeOfPolinom = [[1, 0]]
+    m = None
+    while (rightBoundary - leftBoundary > 0.000001):
+        m = (rightBoundary + leftBoundary) / 2
+        try:
+            uLeftBoundary = findSolutionOfFunction(polinom, leftBoundary) / findSolutionOfFunction(derivativeOfPolinom, leftBoundary)
+            uRightBoundary = findSolutionOfFunction(polinom, rightBoundary) / findSolutionOfFunction(derivativeOfPolinom, rightBoundary)
+            uM = findSolutionOfFunction(polinom, m) / findSolutionOfFunction(derivativeOfPolinom, m)
+        except ZeroDivisionError as e:
+            print(f'{e} in sub-range[{leftBoundary, rightBoundary}]')
+            return None
+        # if U(a) and U(m) differ in sign(+ -)
+        if uLeftBoundary * uM < 0:
+            rightBoundary = m
+        # if U(a) and U(m) has the same sign(+ -)
+        else:
+            leftBoundary = m
+    if m is None:
+        return None
+    return m
+
+
+def checkConditionForBisectionMethod(leftBoundary, rightBoundary, polinom, derivativeOfPolinom = None):
+    if derivativeOfPolinom is None:
+        derivativeOfPolinom = [[1, 0]]
+    fLeftBoundary = findSolutionOfFunction(polinom, leftBoundary)
+    fRightBoundary = findSolutionOfFunction(polinom, rightBoundary)
+    fDerivativeLeftBoundary = findSolutionOfFunction(derivativeOfPolinom, leftBoundary)
+    fDerivativeRightBoundary = findSolutionOfFunction(derivativeOfPolinom, rightBoundary)
+    try:
+        uLeftBoundary = fLeftBoundary / fDerivativeLeftBoundary
+        uRightBoundary = fRightBoundary / fDerivativeRightBoundary
+    except ZeroDivisionError as e:
+        return False
+    return uLeftBoundary * uRightBoundary < 0
 
 
 
-# |1|
-# | | x [ 3, 5]
-# |2|
+
+
+
+
+
+
+
+
