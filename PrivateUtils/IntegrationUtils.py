@@ -116,17 +116,17 @@ def userMenuForIntegrationMethods():
 
 
 
-x = sp.symbols('x')
+"""x = sp.symbols('x')
 p = sp.sin(x)
 a = 0
 b = math.pi
-"""p = 2*x
+p = 2*x
 a = 0
-b = 2"""
+b = 2
 print(trapezeMethod(a, b, p))
 print(sympsonMethod(a, b, p))
-"""activateTrapezeMethod()
-activateSympsonMethod()"""
+activateTrapezeMethod()
+activateSympsonMethod()
 # activateTrapezeMethod()
-# userMenuForIntegrationMethods()
+# userMenuForIntegrationMethods()"""
 
