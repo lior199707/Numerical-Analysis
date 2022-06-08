@@ -29,6 +29,77 @@ def activateTrapezeMethod():
     activateIntegrationMethod(trapezeMethod)
 
 
+def callsympsonmethod(leftboundary, rightboundary, function):
+    """
+    Activates sympsonMethod untill the difference will match the precise that we chose
+
+    :param leftboundary:  left boundary
+    :param rightboundary: right boundary
+    :param function: function
+    :return: integral
+    """
+    numofsection = 10
+    oldintegral = sympsonMethod1(leftboundary, rightboundary, function, numofsection)
+    print('old integral:', oldintegral)
+    numofsection += 10
+    newintegral = sympsonMethod1(leftboundary, rightboundary, function, numofsection)
+    print('new integral:', newintegral)
+    numOfIterations = 0
+    while abs(newintegral - oldintegral) > 0.0000001:
+        numOfIterations += 1
+        oldintegral = newintegral
+        newintegral = 0
+        numofsection += 10
+        newintegral = sympsonMethod1(leftboundary, rightboundary, function, numofsection)
+        print('new integral:', newintegral)
+    print('number of iterations for finding answer:', numOfIterations)
+    return newintegral
+
+
+def sympsonMethod1(leftBoundary, rightBoundary, polynomial, numofsection):
+    def dividesection(leftbound, rightbound, numberofsections):
+        """
+        dividing the boundaries into sections in list [0.1,0.2] [0.2,0.3] ....
+
+        :param leftbound:  left boundary
+        :param rightbound: right boundary
+        :param numberofsections: number of sections
+        :return: list of sections
+        """
+        dist = (rightbound - leftbound) / numberofsections
+        sectionslist = []
+        while (leftbound < rightbound):
+            sectionslist.append([leftbound, leftbound + dist])
+            leftbound = leftbound + dist
+        return sectionslist
+    """
+    calculates the integral of the polynomial between the range leftBoundary to rightBoundary using the Sympson method.
+
+    @param leftBoundary: the smaller x value.
+    @param rightBoundary: the bigger x value.
+    @param polynomial: the polynomial.
+    @return:float, the integral of the polynomial between the range leftBoundary to rightBoundary
+    """
+    x = sp.symbols('x')
+    f = sp.utilities.lambdify(x, polynomial)
+    # divide the big range to a list of smaller ranges in order to minimize the error in the calculations
+    mash = dividesection(leftBoundary, rightBoundary, numofsection)
+    h = mash[0][1] - mash[0][0]
+    size = len(mash)
+    # calculate result
+    result = h * f(leftBoundary)
+    #  for every boundary in mash starting from the second boundary
+    for index in range(1, size):
+        # calculate h
+        h = mash[index][1] - mash[index][0]
+        if index % 2 == 1:
+            result += 4 * h * f(mash[index][0])
+        else:
+            result += 2 * h * f(mash[index][0])
+    result += h * f(rightBoundary)
+    return 1.0 / 3.0 * result
+
+
 def sympsonMethod(leftBoundary, rightBoundary, polynomial):
     """
     calculates the integral of the polynomial between the range leftBoundary to rightBoundary using the Sympson method.
@@ -42,6 +113,7 @@ def sympsonMethod(leftBoundary, rightBoundary, polynomial):
     f = sp.utilities.lambdify(x, polynomial)
     # divide the big range to a list of smaller ranges in order to minimize the error in the calculations
     mash = privateUtils.getMash(leftBoundary, rightBoundary, int((rightBoundary - leftBoundary) * 10))
+    print(mash)
     h = mash[0][1] - mash[0][0]
     size = len(mash)
     # calculate result

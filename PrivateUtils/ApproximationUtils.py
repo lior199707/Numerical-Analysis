@@ -56,6 +56,9 @@ def nevilleMethod(xList, yList, x):
     for diff in range(1, valuesListSize):
         for index in range(valuesListSize - diff):  # 4  0,1  1,1  2,3
             result = calcPolynomial(index, index + diff)
+    # print all calculated result in the process for finding the answer
+    for key, val in resultsDictionary.items():
+        print(f'P{key[0],key[1]} = {val}')
     return result
 
 
@@ -234,15 +237,21 @@ def polynomialInterpolation(xList, yList, x):
     matrix = privateUtils.createZeroMatrixInSize(valuesListSize, valuesListSize)
     # initialize the matrix for finding the answer for p(x)
     matrix = initMatrix(matrix, valuesListSize)
+    print('matrix for calculations:')
+    privateUtils.print_matrix(matrix)
     # rank the matrix
     rankedMatrix = privateUtils.gaussElimination(matrix)[0]
+    print('ranked matrix:')
+    privateUtils.print_matrix(rankedMatrix)
     # extract the solution column of the ranked matrix
     solutionVector = privateUtils.extractSolutionColumn(rankedMatrix)
     # calculate the answer
     result = 0
     for i in range(valuesListSize):
+        print('current result:', result)
         result += solutionVector[i][0] * pow(x, i)
-    return round(result, 4)
+    print('final result:', result)
+    return result
 
 
 def activateLagrangeInterpolation():
