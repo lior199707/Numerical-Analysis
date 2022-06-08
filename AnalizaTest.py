@@ -7,7 +7,7 @@ import sympy as sp
 # 316126143 :  1+2 = 3
 
 
-# part a question 3
+"""# part a question 3
 print('////////////////////////////////////////////////////////////////////')
 x = sp.symbols('x')
 p = sp.cos((2 * x ** 3) + (5 * x ** 2) - 6) / (2 * math.e ** (-2 * x))
@@ -45,7 +45,9 @@ print('result: ', PrivateUtils.ApproximationUtils.polynomialInterpolation(xList,
 
 print('result: ', PrivateUtils.ApproximationUtils.nevilleMethod(xList, yList, x))
 # part b question 3
-print('#######################################################')
+print('#######################################################')"""
+
+PrivateUtils.privateUtils.userMenuForPolynomialIterativeMethods()
 
 
 

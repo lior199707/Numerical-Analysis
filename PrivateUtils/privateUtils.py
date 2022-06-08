@@ -1218,7 +1218,8 @@ def initializeSympyPolynomialData():
     """
     x = sympy.symbols('x')
     # get polynomial from user
-    polynomial = getSympyPoly()
+    polynomial = sympy.cos((2 * x ** 3) + (5 * x ** 2) - 6) / (2 * math.e ** (-2 * x))
+    #polynomial = getSympyPoly()
     derivative = sympy.diff(polynomial, x)
     f = sympy.utilities.lambdify(x, polynomial)
     fTag = sympy.utilities.lambdify(x, derivative)
