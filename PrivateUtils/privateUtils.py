@@ -772,7 +772,9 @@ def getMash(leftBoundary, rightBoundary, numOfMashes):
         # initialize the left boundary to be the right boundary of the former sub-range
         # and the right boundary to be the left boundary plus the constant difference
         mash.append([mash[index][1], round(mash[index][1] + constantDifference, 5)])
-    mash.append([round(mash[numOfMashes - 2][1], 5), round(rightBoundary, 5)])
+    # if already used the right boundary to close the big range(mash)
+    if round(mash[numOfMashes - 2][1], 5) != round(rightBoundary, 5):
+        mash.append([round(mash[numOfMashes - 2][1], 5), round(rightBoundary, 5)])
     return mash
 
 
