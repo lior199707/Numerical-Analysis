@@ -43,9 +43,9 @@ yList = [-213.5991, -204.4416, -194.9375, -185.0256, -174.6711, -163.8656, -152.
 x = 0.75
 print('result: ', PrivateUtils.ApproximationUtils.polynomialInterpolation(xList, yList, x))
 
-"""print('result: ', PrivateUtils.ApproximationUtils.nevilleMethod(xList, yList, x))
+print('result: ', PrivateUtils.ApproximationUtils.nevilleMethod(xList, yList, x))
 # part b question 3
-print('#######################################################')"""
+print('#######################################################')
 
 
 
