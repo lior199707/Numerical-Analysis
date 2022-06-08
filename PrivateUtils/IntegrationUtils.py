@@ -53,6 +53,7 @@ def callsympsonmethod(leftboundary, rightboundary, function):
         newintegral = sympsonMethod1(leftboundary, rightboundary, function, numofsection)
         print('new integral:', newintegral)
     print('number of iterations for finding answer:', numOfIterations)
+    print('number of sections for finding a good approximation for the answer: ', numofsection)
     return newintegral
 
 
